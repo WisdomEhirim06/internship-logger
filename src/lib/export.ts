@@ -1,6 +1,6 @@
 import type { Entry } from '../db'
 import type { Profile } from '../db'
-import { parseDate, weekdayName, monthName } from './dateUtils'
+import { weekdayName } from './dateUtils'
 
 const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 

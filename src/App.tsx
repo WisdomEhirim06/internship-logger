@@ -73,7 +73,7 @@ export default function App() {
 
       {showNav && (
         <BottomNav
-          current={page === 'settings' ? 'home' : page}
+          current={page as 'home' | 'entry' | 'weekly' | 'history' | 'export'}
           onChange={(p) => {
             if (p === 'entry') setEntryDate(today())
             setPage(p)

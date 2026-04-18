@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react'
 import { getAllEntries, getProfile } from '../db'
-import type { Entry, Profile } from '../db'
+import type { Entry } from '../db'
 import { getMissingWorkdays, formatDisplay, weekdayName } from '../lib/dateUtils'
 
 interface Props { onNavigate: (page: string, date?: string) => void }
 
 export default function History({ onNavigate }: Props) {
-  const [entries, setEntries]   = useState<Entry[]>([])
-  const [missing, setMissing]   = useState<string[]>([])
-  const [profile, setProfile]   = useState<Profile | null>(null)
-  const [tab, setTab]           = useState<'logged' | 'missing'>('logged')
+  const [entries, setEntries] = useState<Entry[]>([])
+  const [missing, setMissing] = useState<string[]>([])
+  const [tab, setTab]         = useState<'logged' | 'missing'>('logged')
 
   useEffect(() => {
     async function load() {
       const p = await getProfile()
       if (!p) return
-      setProfile(p)
       const all = await getAllEntries()
       setEntries(all.reverse())
       setMissing(getMissingWorkdays(p.startDate, all))

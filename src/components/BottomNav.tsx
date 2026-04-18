@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 type Page = 'home' | 'entry' | 'weekly' | 'history' | 'export'
 
 interface Props {
@@ -5,12 +7,14 @@ interface Props {
   onChange: (p: Page) => void
 }
 
-const tabs: { id: Page; label: string; icon: string }[] = [
-  { id: 'home',    label: 'Home',    icon: HomeIcon },
-  { id: 'entry',   label: 'Log',     icon: PenIcon },
-  { id: 'weekly',  label: 'Week',    icon: CalIcon },
-  { id: 'history', label: 'History', icon: ClockIcon },
-  { id: 'export',  label: 'Export',  icon: ShareIcon },
+type IconFC = () => ReactNode
+
+const tabs: { id: Page; label: string; Icon: IconFC }[] = [
+  { id: 'home',    label: 'Home',    Icon: HomeIcon },
+  { id: 'entry',   label: 'Log',     Icon: PenIcon },
+  { id: 'weekly',  label: 'Week',    Icon: CalIcon },
+  { id: 'history', label: 'History', Icon: ClockIcon },
+  { id: 'export',  label: 'Export',  Icon: ShareIcon },
 ]
 
 function HomeIcon() {
@@ -64,25 +68,22 @@ export default function BottomNav({ current, onChange }: Props) {
       <div className="flex items-center justify-around px-2 py-2">
         {tabs.map(tab => {
           const active = current === tab.id
-          const Icon = tab.icon as unknown as () => JSX.Element
           return (
             <button
               key={tab.id}
               onClick={() => onChange(tab.id)}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-150 ${
-                active
-                  ? 'text-[#FF2D78]'
-                  : 'text-gray-400 hover:text-gray-600'
+                active ? 'text-[#FF2D78]' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
               <span className={`transition-transform duration-150 ${active ? 'scale-110' : ''}`}>
-                <Icon />
+                <tab.Icon />
               </span>
               <span className={`text-[10px] font-semibold tracking-wide ${active ? 'text-[#FF2D78]' : ''}`}>
                 {tab.label}
               </span>
               {active && (
-                <span className="absolute -bottom-0 w-6 h-0.5 bg-[#FF2D78] rounded-full" />
+                <span className="w-6 h-0.5 bg-[#FF2D78] rounded-full" />
               )}
             </button>
           )
